@@ -1,11 +1,11 @@
-import { ActivityIndicator, Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { DetailHeader, Gap, NumberFormatter, SectionSpacer } from '../../components'
 import { useFocusEffect } from '@react-navigation/native';
 import { action } from '../../service';
 import { baseUrl, customColors, showError } from '../../utils';
 import RenderHTML from 'react-native-render-html';
-import { IcCategory, IcLevel, IcLocation, IcStarColor, IcTime, IcType } from '../../assets';
+import { IcArrowDown, IcCategory, IcLevel, IcLocation, IcStarColor, IcTime, IcType } from '../../assets';
 
 const DetailPage = ({ navigation, route }) => {
     const params = route.params;
@@ -251,6 +251,47 @@ const DetailPage = ({ navigation, route }) => {
                         <View className='p-4'>
                             <Text className='text-black font-medium mb-3'>Silabus</Text>
                             <Text className='text-gray-500 text-xs'>{topicLength} Topic | {materyLength} Materi | {Math.floor(duration / 60)} Jam {duration % 60} Menit</Text>
+
+                            {sylabus.map((syl) => {
+                                return (
+                                    <>
+                                        <TouchableOpacity 
+                                            key={syl.id} 
+                                            className='p-4 border border-gray-500 rounded-md mt-3 flex-row justify-between items-center'
+                                            onPress={() => {
+                                                const index = sylabus.findIndex((data) => data.id === syl.id);
+                                                const newData = [...sylabus];
+                                                newData[index].open = !newData[index].open;
+                                                setSylabus(newData);
+                                            }}>
+                                            <Text 
+                                                numberOfLines={1}
+                                                className='mr-3'
+                                                style={{ fontSize: 10 }}>
+                                                {syl.title}
+                                            </Text>
+                                            <IcArrowDown/>
+                                        </TouchableOpacity>
+                                        {syl.open && (
+                                            syl.subTopic.map((sub) => {
+                                                return (
+                                                    <View 
+                                                        key={sub.id} 
+                                                        className='p-4 border border-gray-500 rounded-md mt-3 flex-row justify-between items-center'>
+                                                        <Text 
+                                                            numberOfLines={1}
+                                                            className='mr-3'
+                                                            style={{ fontSize: 10 }}>
+                                                            {sub.title}
+                                                        </Text>
+                                                        <Text style={{ fontSize: 10 }}>{sub.duration} Menit</Text>
+                                                    </View>
+                                                )
+                                            })
+                                        )}
+                                    </>
+                                )
+                            })}
                         </View>
                                 
                         <Gap height={120} />
