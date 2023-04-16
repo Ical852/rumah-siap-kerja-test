@@ -10,6 +10,8 @@ import {
   Announcement,
   BannerIndicator,
   CategoryItem,
+  HeadersSection,
+  HighlightSection,
   ImageBanner,
   SearchHeader,
   SectionSpacer
@@ -46,6 +48,9 @@ const HomePage = () => {
     },
   ];
 
+  const [secContent, setSecContent] = useState([]);
+  const [thrContent, setThrContent] = useState([]);
+
   const getAnnouncement = async () => {
     try {
       const response = await action(`${baseUrl}/v3/website/announcements/active`);
@@ -64,20 +69,32 @@ const HomePage = () => {
       showError(error);
     }
   }
+  const getSecondContent = async () => {
+    try {
+      const response = await action(`${baseUrl}/v3/highlights?isActive=true`);
+      const data = response.data.data;
+      setSecContent(data.content);
+    } catch (error) {
+      showError(error);
+    }
+  }
+  const getHeaders = async () => {
+    try {
+      const response = await action(`${baseUrl}/v3/website/headers?numberOfCorePrograms=5&location=welcome`);
+      const data = response.data.data;
+      setThrContent(data);
+    } catch (error) {
+      showError(error);
+    }
+  }
   useFocusEffect(
     useCallback(() => {
       getAnnouncement();
       getBanner();
+      getSecondContent();
+      getHeaders();
     }, [])
   )
-
-  const SecondSection = () => {
-    return (
-      <View>
-        <Text>Pilihan Terbaik Untuk Kamu</Text>
-      </View>
-    )
-  }
 
   const renderItem = ({ item, index }) => {
     return <ImageBanner img={item.imagePath} onPress={() => {}} />
@@ -92,7 +109,7 @@ const HomePage = () => {
         onPress={() => {}}
       />
 
-      <ScrollView className='flex-1'>
+      <ScrollView className='flex-1' showsVerticalScrollIndicator={false}>
         <View className='mx-5 mt-5 mb-8'>
           <Carousel
             layout={'default'}
@@ -124,7 +141,21 @@ const HomePage = () => {
         
         <SectionSpacer />
 
-        <SecondSection />
+        {secContent.length > 0 && (
+          <View className='pt-5'>
+            {secContent.map((data, index) => {
+              return <HighlightSection key={index} data={data} isLast={secContent.length - 1 === index} />
+            })}
+          </View>
+        )}
+
+        {thrContent.length > 0 && (
+          <View className='pt-5'>
+            {thrContent.map((data, index) => {
+              return <HeadersSection key={index} data={data} isLast={thrContent.length - 1 === index} />
+            })}
+          </View>
+        )}
 
       </ScrollView>
     </SafeAreaView>

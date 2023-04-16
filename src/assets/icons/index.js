@@ -13,6 +13,7 @@ import IcWorker from './icworker.svg';
 import IcMoney from './icmoney.svg';
 import IcStudentHat from './icstudenthat.svg';
 import IcWorkBag from './icworkbag';
+import IcArrow from './icarrow.svg';
 
 export {
     IcLogo,
@@ -29,5 +30,6 @@ export {
     IcWorker,
     IcMoney,
     IcStudentHat,
-    IcWorkBag
+    IcWorkBag,
+    IcArrow
 }
