@@ -5,5 +5,5 @@ import HeadersSection from "./HeadersSection";
 export {
     BottomNavigator,
     HighlightSection,
-    HeadersSection
+    HeadersSection,
 }

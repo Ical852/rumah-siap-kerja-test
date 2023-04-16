@@ -14,6 +14,7 @@ import IcMoney from './icmoney.svg';
 import IcStudentHat from './icstudenthat.svg';
 import IcWorkBag from './icworkbag';
 import IcArrow from './icarrow.svg';
+import IcStar from './icstar.svg';
 
 export {
     IcLogo,
@@ -31,5 +32,6 @@ export {
     IcMoney,
     IcStudentHat,
     IcWorkBag,
-    IcArrow
+    IcArrow,
+    IcStar
 }

@@ -4,7 +4,7 @@ import { customColors } from '../../../utils'
 
 const HighlightTag = ({ title }) => {
   return (
-    <View className='p-1 mr-1' style={styles.container}>
+    <View className='p-1 mr-1 mt-1' style={styles.container}>
       <Text className='text-white font-bold' style={styles.text}>{title}</Text>
     </View>
   )

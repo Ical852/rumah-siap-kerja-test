@@ -4,6 +4,8 @@ import BannerIndicator from "./BannerIndicator";
 import CategoryItem from "./CategoryItem";
 import SectionSpacer from "./SectionSpacer";
 import HighlightTag from "./HighlightTag";
+import NumberFormatter from "./NumberFormatter";
+import CategoryFilterItem from "./CategoryFilterItem";
 
 export {
     Gap,
@@ -11,5 +13,7 @@ export {
     BannerIndicator,
     CategoryItem,
     SectionSpacer,
-    HighlightTag
+    HighlightTag,
+    NumberFormatter,
+    CategoryFilterItem
 }
