@@ -1,9 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { Gap, SectionSpacer } from '../../atoms';
-import { customColors } from '../../../utils';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+
 import { IcArrow } from '../../../assets';
+import { Gap, SectionSpacer } from '../../atoms';
 import { HighlightBanner } from '../../mollecules';
+
+import { customColors } from '../../../utils';
 
 const HighlightSection = ({ data, isLast }) => {
     const { name, description, callToAction, coreProgram } = data;

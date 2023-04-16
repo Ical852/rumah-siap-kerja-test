@@ -1,5 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+
 import { IcBack, IcShare } from '../../../assets'
 
 const DetailHeader = ({ onBack, onShare }) => {

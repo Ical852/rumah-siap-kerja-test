@@ -6,6 +6,7 @@ import SectionSpacer from "./SectionSpacer";
 import HighlightTag from "./HighlightTag";
 import NumberFormatter from "./NumberFormatter";
 import CategoryFilterItem from "./CategoryFilterItem";
+import SubSylabusItem from "./SubSylabusItem";
 
 export {
     Gap,
@@ -15,5 +16,6 @@ export {
     SectionSpacer,
     HighlightTag,
     NumberFormatter,
-    CategoryFilterItem
+    CategoryFilterItem,
+    SubSylabusItem
 }

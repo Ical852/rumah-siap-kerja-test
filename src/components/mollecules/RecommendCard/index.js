@@ -1,5 +1,6 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+
 import { NumberFormatter } from '../../atoms';
 
 const RecommendCard = ({ data, onPress }) => {

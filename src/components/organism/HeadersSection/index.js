@@ -1,8 +1,10 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+
+import { IcArrow } from '../../../assets';
 import { Gap, SectionSpacer } from '../../atoms'
 import { ProgramCard } from '../../mollecules';
-import { IcArrow } from '../../../assets';
+
 import { customColors } from '../../../utils';
 
 const HeadersSection = ({ data, isLast, goToDetail }) => {
@@ -32,7 +34,7 @@ const HeadersSection = ({ data, isLast, goToDetail }) => {
                     <IcArrow />
                 </TouchableOpacity>
             </View>
-        <SectionSpacer />
+            <SectionSpacer />
         </View>
     )
 }

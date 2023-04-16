@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 
 const ImageBanner = ({ img, onPress }) => {
   return (

@@ -1,11 +1,14 @@
-import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { DetailHeader, Gap, NumberFormatter, RecommendCard, SectionSpacer } from '../../components'
+import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
+import RenderHTML from 'react-native-render-html';
+
 import { action } from '../../service';
 import { baseUrl, customColors, showError } from '../../utils';
-import RenderHTML from 'react-native-render-html';
-import { IcArrowDown, IcArrowUp, IcCategory, IcLevel, IcLocation, IcStarColor, IcTime, IcType } from '../../assets';
+
+import { DetailHeader, Gap, NumberFormatter, RecommendCard, SectionSpacer, SylabusItem, TrainerItem } from '../../components'
+import { IcCategory, IcLevel, IcLocation, IcStarColor, IcTime, IcType } from '../../assets';
+
 
 const DetailPage = ({ navigation, route }) => {
     const params = route.params;
@@ -250,10 +253,10 @@ const DetailPage = ({ navigation, route }) => {
                             <Text className='text-black font-medium'>Pelatih</Text>
                             {trainers.map((trainer) => {
                                 return (
-                                    <View className='flex-row items-center mt-3'>
-                                        <Image source={{ uri: trainer.profileImage }} className='w-10 h-10 rounded-full' />
-                                        <Text className='text-xs font-bold text-black ml-3'>{trainer.fullName}</Text>
-                                    </View>
+                                    <TrainerItem
+                                        key={trainer.id}
+                                        trainer={trainer}
+                                    />
                                 )
                             })}
                         </View>
@@ -266,42 +269,16 @@ const DetailPage = ({ navigation, route }) => {
 
                             {sylabus.map((syl) => {
                                 return (
-                                    <>
-                                        <TouchableOpacity 
-                                            key={syl.id} 
-                                            className='p-4 border border-gray-500 rounded-md mt-3 flex-row justify-between items-center'
-                                            onPress={() => {
-                                                const index = sylabus.findIndex((data) => data.id === syl.id);
-                                                const newData = [...sylabus];
-                                                newData[index].open = !newData[index].open;
-                                                setSylabus(newData);
-                                            }}>
-                                            <Text
-                                                numberOfLines={1}
-                                                className='mr-3 flex-1'
-                                                style={{ fontSize: 10 }}>
-                                                {syl.title}
-                                            </Text>
-                                            {syl.open ? <IcArrowUp /> : <IcArrowDown/>}
-                                        </TouchableOpacity>
-                                        {syl.open && (
-                                            syl.subTopic.map((sub) => {
-                                                return (
-                                                    <View 
-                                                        key={sub.id} 
-                                                        className='ml-4 p-4 border border-gray-500 rounded-md mt-3 flex-row justify-between items-center'>
-                                                        <Text 
-                                                            numberOfLines={1}
-                                                            className='mr-3 flex-1'
-                                                            style={{ fontSize: 10 }}>
-                                                            {sub.title}
-                                                        </Text>
-                                                        <Text style={{ fontSize: 10 }} numberOfLines={1}>{sub.duration} Menit</Text>
-                                                    </View>
-                                                )
-                                            })
-                                        )}
-                                    </>
+                                    <SylabusItem
+                                        key={syl.id}
+                                        syl={syl}
+                                        onPress={() => {
+                                            const index = sylabus.findIndex((data) => data.id === syl.id);
+                                            const newData = [...sylabus];
+                                            newData[index].open = !newData[index].open;
+                                            setSylabus(newData);
+                                        }}
+                                    />
                                 )
                             })}
                         </View>

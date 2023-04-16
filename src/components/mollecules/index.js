@@ -4,6 +4,8 @@ import HighlightBanner from "./HighlightBanner";
 import ProgramCard from "./ProgramCard";
 import DetailHeader from "./DetailHeader";
 import RecommendCard from "./RecommendCard";
+import SylabusItem from "./SylabusItem";
+import TrainerItem from "./TrainerItem";
 
 export {
     Announcement,
@@ -11,5 +13,7 @@ export {
     HighlightBanner,
     ProgramCard,
     DetailHeader,
-    RecommendCard
+    RecommendCard,
+    SylabusItem,
+    TrainerItem
 }

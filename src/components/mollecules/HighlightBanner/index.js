@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { StyleSheet, View } from 'react-native'
+
 import { HighlightTag, ImageBanner } from '../../atoms'
 
 const HighlightBanner = ({ img, tags }) => {
