@@ -134,6 +134,7 @@ const HomePage = () => {
     try {
       const response = await action(`${baseUrl}/v3/website/headers?numberOfCorePrograms=5&location=welcome`);
       const data = response.data.data;
+      console.log(JSON.stringify(data))
       setThrContent(data);
     } catch (error) {
       showError(error);
