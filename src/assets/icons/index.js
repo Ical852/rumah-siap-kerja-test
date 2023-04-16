@@ -15,6 +15,15 @@ import IcStudentHat from './icstudenthat.svg';
 import IcWorkBag from './icworkbag';
 import IcArrow from './icarrow.svg';
 import IcStar from './icstar.svg';
+import IcStarColor from './icstarcolor.svg';
+import IcBack from './icback.svg';
+import IcShare from './icshare.svg';
+import IcType from './ictype.svg';
+import IcCategory from './iccategory.svg';
+import IcTime from './ictime.svg';
+import IcLevel from './iclevel.svg';
+import IcLocation from './iclocation.svg';
+import IcArrowDown from './icarrowdown.svg';
 
 export {
     IcLogo,
@@ -33,5 +42,14 @@ export {
     IcStudentHat,
     IcWorkBag,
     IcArrow,
-    IcStar
+    IcStar,
+    IcStarColor,
+    IcBack,
+    IcShare,
+    IcType,
+    IcCategory,
+    IcTime,
+    IcLevel,
+    IcLocation,
+    IcArrowDown
 }

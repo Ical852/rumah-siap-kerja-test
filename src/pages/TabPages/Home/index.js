@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { ActivityIndicator, Dimensions, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Carousel from 'react-native-snap-carousel';
 
 import { action } from '../../../service'
@@ -25,6 +25,7 @@ const HomePage = () => {
   const [anounceText, setAnounceText] = useState('');
   const [search, setSearch] = useState('');
   const [banners, setBanners] = useState([]);
+  const navigation = useNavigation();
 
   const [bannerIndex, setBannerIndex] = useState(0);
   const bannerWidth = Dimensions.get('window').width - 40;
@@ -134,7 +135,6 @@ const HomePage = () => {
     try {
       const response = await action(`${baseUrl}/v3/website/headers?numberOfCorePrograms=5&location=welcome`);
       const data = response.data.data;
-      console.log(JSON.stringify(data))
       setThrContent(data);
     } catch (error) {
       showError(error);
@@ -164,6 +164,11 @@ const HomePage = () => {
   const changeFilter = (code) => {
     setCurrentCategory(code);
     getLastContent(code);
+  }
+  const goToDetail = (detailData) => {
+    navigation.navigate('Detail', {
+      data: detailData
+    });
   }
 
   const renderItem = ({ item, index }) => {
@@ -222,7 +227,14 @@ const HomePage = () => {
         {thrContent.length > 0 && (
           <View className='pt-5'>
             {thrContent.map((data, index) => {
-              return <HeadersSection key={index} data={data} isLast={thrContent.length - 1 === index} />
+              return (
+                <HeadersSection
+                  key={index}
+                  data={data}
+                  isLast={thrContent.length - 1 === index}
+                  goToDetail={goToDetail}
+                />
+              )
             })}
           </View>
         )}
@@ -262,7 +274,9 @@ const HomePage = () => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <Gap width={20} />
                 {lastContent.map((prog, index) => {
-                    return <ProgramCard key={index} data={prog} onPress={() => {}} />
+                    return <ProgramCard key={index} data={prog} onPress={() => {
+                      goToDetail(prog);
+                    }} />
                 })}
               </ScrollView>
             )}

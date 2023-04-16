@@ -5,7 +5,7 @@ import { ProgramCard } from '../../mollecules';
 import { IcArrow } from '../../../assets';
 import { customColors } from '../../../utils';
 
-const HeadersSection = ({ data, isLast }) => {
+const HeadersSection = ({ data, isLast, goToDetail }) => {
     const { name, description, headerDetails } = data;
 
     return (
@@ -19,7 +19,9 @@ const HeadersSection = ({ data, isLast }) => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <Gap width={20} />
                     {headerDetails.map((prog, index) => {
-                        return <ProgramCard key={index} data={prog} onPress={() => {}} />
+                        return <ProgramCard key={index} data={prog} onPress={() => {
+                            goToDetail(prog);
+                        }} />
                     })}
                 </ScrollView>
 

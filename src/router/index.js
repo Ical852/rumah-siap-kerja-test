@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import {
     ActivityPage,
     CertificatePage,
+    DetailPage,
     HomePage,
     SplashPage,
     TransactionPage
@@ -39,6 +40,7 @@ const Router = () => {
         initialRouteName='Splash'
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Splash' component={SplashPage} />
+        <Stack.Screen name='Detail' component={DetailPage} />
         <Stack.Screen name='MainPage' component={TabRouter} />
     </Stack.Navigator>
   );
