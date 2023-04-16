@@ -1,15 +1,16 @@
-import { ActivityIndicator, Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { DetailHeader, Gap, NumberFormatter, SectionSpacer } from '../../components'
+import { DetailHeader, Gap, NumberFormatter, RecommendCard, SectionSpacer } from '../../components'
 import { useFocusEffect } from '@react-navigation/native';
 import { action } from '../../service';
 import { baseUrl, customColors, showError } from '../../utils';
 import RenderHTML from 'react-native-render-html';
-import { IcArrowDown, IcCategory, IcLevel, IcLocation, IcStarColor, IcTime, IcType } from '../../assets';
+import { IcArrowDown, IcArrowUp, IcCategory, IcLevel, IcLocation, IcStarColor, IcTime, IcType } from '../../assets';
 
 const DetailPage = ({ navigation, route }) => {
     const params = route.params;
-    const paramsData = params.data;
+    const [paramsData, setParamsData] = useState(params.data);
+
     const [id, setId] = useState('');
     const [detailData, setDetailData] = useState(undefined);
     const [summary, setSummary] = useState(undefined);
@@ -18,10 +19,11 @@ const DetailPage = ({ navigation, route }) => {
     const [materyLength, setMateryLength] = useState(0);
     const [sylabus, setSylabus] = useState([]);
     const [duration, setDuration] = useState(0);
+    const [recommended, setRecommended] = useState([]);
     
-    const fetchData = async () => {
+    const fetchData = async (code) => {
         try {
-            const response = await action(`${baseUrl}/v3/website/core-programs/find-by-code/${paramsData.code}`);
+            const response = await action(`${baseUrl}/v3/website/core-programs/find-by-code/${code}`);
             const data = response.data.data;
             const dataId = data.id;
             setId(dataId);
@@ -81,10 +83,20 @@ const DetailPage = ({ navigation, route }) => {
            showError(error); 
         }
     }
+    const fetchRecommended = async () => {
+        try {
+            const response = await action(`${baseUrl}/v2/website/core-programs/randomized?page=1&size=4&stamatus=PUBLISHED,APPROVED`);
+            const data = response.data.data;
+            setRecommended(data.content);
+        } catch (error) {
+            showError(error);
+        }
+    }
 
     useFocusEffect(
         useCallback(() => {
-            fetchData();
+            fetchData(paramsData.code);
+            fetchRecommended();
         }, [])
     );
 
@@ -97,7 +109,7 @@ const DetailPage = ({ navigation, route }) => {
             return (
                 <Text 
                     style={styles.coachtext}
-                    className='mx-2 text-green-500 font-medium'>
+                    className='text-green-500 font-medium'>
                     Gratis
                 </Text>
             )
@@ -107,20 +119,20 @@ const DetailPage = ({ navigation, route }) => {
             return (
                 <View>
                     <View className='flex-row items-center mb-0.5'>
-                        <View style={styles.contDiscount} className='ml-2 mr-1 justify-center items-center'>
+                        <View style={styles.contDiscount} className='mr-1 justify-center items-center'>
                             <Text style={styles.discount} className='text-red-500 font-bold'>
                                 {getDiscount(priceData.price, priceData.originalPrice)}%
                             </Text>
                         </View>
                         <Text 
                             style={styles.originPrice} 
-                            className='font-semibold text-gray-500 mx-2 mb-2'>
+                            className='font-semibold text-gray-500 mb-2'>
                             <NumberFormatter number={priceData.originalPrice} />
                         </Text>
                     </View>
                     <Text 
                         style={styles.coachtext} 
-                        className='font-semibold text-black mx-2'>
+                        className='font-semibold text-black'>
                         <NumberFormatter number={priceData.price} />
                     </Text>
                 </View>
@@ -130,7 +142,7 @@ const DetailPage = ({ navigation, route }) => {
         return (
             <Text 
                 style={styles.coachtext} 
-                className='font-semibold text-black mx-2'>
+                className='font-semibold text-black'>
                 <NumberFormatter number={priceData.price} />
             </Text>
         )
@@ -143,7 +155,7 @@ const DetailPage = ({ navigation, route }) => {
                     onBack={() => navigation.goBack()}
                 />
 
-                {detailData ? (
+                {detailData && (
                     <ScrollView className='flex-1' showsVerticalScrollIndicator={false}>
                         <Image source={{ uri: detailData.coverImage }} className='mt-4 h-56 rounded-md mx-4' />
                         <Text className='mt-3 text-black font-bold mx-4'>{detailData.title}</Text>
@@ -235,10 +247,10 @@ const DetailPage = ({ navigation, route }) => {
                         <SectionSpacer />
                         
                         <View className='p-4'>
-                            <Text className='text-black font-medium mb-3'>Pelatih</Text>
+                            <Text className='text-black font-medium'>Pelatih</Text>
                             {trainers.map((trainer) => {
                                 return (
-                                    <View className='flex-row items-center'>
+                                    <View className='flex-row items-center mt-3'>
                                         <Image source={{ uri: trainer.profileImage }} className='w-10 h-10 rounded-full' />
                                         <Text className='text-xs font-bold text-black ml-3'>{trainer.fullName}</Text>
                                     </View>
@@ -264,27 +276,27 @@ const DetailPage = ({ navigation, route }) => {
                                                 newData[index].open = !newData[index].open;
                                                 setSylabus(newData);
                                             }}>
-                                            <Text 
+                                            <Text
                                                 numberOfLines={1}
-                                                className='mr-3'
+                                                className='mr-3 flex-1'
                                                 style={{ fontSize: 10 }}>
                                                 {syl.title}
                                             </Text>
-                                            <IcArrowDown/>
+                                            {syl.open ? <IcArrowUp /> : <IcArrowDown/>}
                                         </TouchableOpacity>
                                         {syl.open && (
                                             syl.subTopic.map((sub) => {
                                                 return (
                                                     <View 
                                                         key={sub.id} 
-                                                        className='p-4 border border-gray-500 rounded-md mt-3 flex-row justify-between items-center'>
+                                                        className='ml-4 p-4 border border-gray-500 rounded-md mt-3 flex-row justify-between items-center'>
                                                         <Text 
                                                             numberOfLines={1}
-                                                            className='mr-3'
+                                                            className='mr-3 flex-1'
                                                             style={{ fontSize: 10 }}>
                                                             {sub.title}
                                                         </Text>
-                                                        <Text style={{ fontSize: 10 }}>{sub.duration} Menit</Text>
+                                                        <Text style={{ fontSize: 10 }} numberOfLines={1}>{sub.duration} Menit</Text>
                                                     </View>
                                                 )
                                             })
@@ -293,16 +305,46 @@ const DetailPage = ({ navigation, route }) => {
                                 )
                             })}
                         </View>
+
+                        <SectionSpacer />
+                        
+                        <View className='py-4'>
+                            <Text className='text-black font-medium mb-3 mx-4'>Rekomendasi Buat Kamu</Text>
+
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <Gap width={16} />
+                                {recommended.map((rec, index) => {
+                                    return (
+                                        <RecommendCard
+                                            key={index}
+                                            data={rec}
+                                            onPress={ async () => {
+                                                setParamsData(rec);
+                                                await fetchData(rec.code);
+                                            }}
+                                        />
+                                    )
+                                })}
+                                <View className='mr-2' />
+                            </ScrollView>
+                        </View>
                                 
-                        <Gap height={120} />
+                        <Gap height={160} />
                     </ScrollView>
-                ) : (
-                    <ActivityIndicator />
                 )}
                 
                 {detailData && (
-                    <View className='absolute bottom-0 w-full bg-white p-4'>
+                    <View className='absolute bottom-0 w-full bg-white p-4' style={styles.shadow}>
                         <RenderPrice />
+                        <View className='mt-5 flex-row items-center'>
+                            <TouchableOpacity className='border justify-center items-center py-2.5 rounded-md flex-1' style={styles.btn1}>
+                                <Text className='text-xs font-bold' style={styles.btn1Title}>Tukar Voucher</Text>
+                            </TouchableOpacity>
+                            <View className='w-5' />
+                            <TouchableOpacity className='justify-center items-center py-2.5 rounded-md flex-1' style={styles.btn2}>
+                                <Text className='text-xs font-bold text-white'>Tukar Voucher</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 )}
             </View>
@@ -330,5 +372,25 @@ const styles = StyleSheet.create({
         padding: 2,
         backgroundColor: '#F6ECEF',
         borderRadius: 3
+    },
+    shadow: {
+        shadowColor: customColors.unactive,
+        shadowOffset: {
+            width: 0,
+            height: -4,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        
+        elevation: 3,
+    },
+    btn1: {
+        borderColor: customColors.blue1
+    },
+    btn2: {
+        backgroundColor: customColors.blue1
+    },
+    btn1Title: {
+        color: customColors.blue1
     }
 })

@@ -24,6 +24,7 @@ import IcTime from './ictime.svg';
 import IcLevel from './iclevel.svg';
 import IcLocation from './iclocation.svg';
 import IcArrowDown from './icarrowdown.svg';
+import IcArrowUp from './icarrowup.svg';
 
 export {
     IcLogo,
@@ -51,5 +52,6 @@ export {
     IcTime,
     IcLevel,
     IcLocation,
-    IcArrowDown
+    IcArrowDown,
+    IcArrowUp
 }
